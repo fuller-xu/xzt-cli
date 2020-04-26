@@ -27,8 +27,9 @@ const installPkg = (pkgArr) => {
 /**
  * 验证元文件
  */
-const validateCommitMsgResource = `${rootPath}/lib/git/validate-commit-msg.js`;
-
+const validateCommitMsgResource = path.resolve(
+  `lib/git/validate-commit-msg.js`
+);
 /**
  * 创建的验证文件
  */
