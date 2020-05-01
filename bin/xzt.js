@@ -8,7 +8,7 @@ program
   .usage("<command> [options]");
 // 安装 npm 依赖
 program
-  .command("i <pkg> [pkgOptions]")
+  .command("i <pkg> [pkgOptions]", "install <pkg> [pkgOptions]")
   .description("install npm package")
   .allowUnknownOption()
   .action((pkg) => {
@@ -37,6 +37,12 @@ program
   .action((cmd) => {
     require("./xzt-git-commit").uninstall();
   });
-
+// 克隆下载web框架模板
+program
+  .command("clone")
+  .description("clone a template of web framework")
+  .action((cmd) => {
+    require("./xzt-template")();
+  });
 // 解析命令行参数
 program.parse(process.argv);

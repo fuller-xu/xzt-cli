@@ -42,5 +42,8 @@
     "hooks": {
       "commit-msg": "node node_modules/git-commit/validate-commit-msg.js"
     }
+  },
+  "dependencies": {
+    "inquirer-autocomplete-prompt": "^1.0.2"
   }
 }
