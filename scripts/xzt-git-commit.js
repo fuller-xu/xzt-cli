@@ -62,7 +62,11 @@ const install = async () => {
 
   // 是否安装依赖
   const needDepArr = cliDependencies.filter(
-    (dep) => !pkg.devDependencies[dep] || !pkg.dependencies[dep]
+    (dep) =>
+      !(
+        pkg.devDependencies &&
+        (pkg.devDependencies[dep] || pkg.dependencies[dep])
+      )
   );
 
   await installOrUninstallPkg(

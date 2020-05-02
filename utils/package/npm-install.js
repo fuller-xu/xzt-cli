@@ -42,9 +42,8 @@ const transformChinese = (operation, title = "") => {
  */
 const installOrUninstallPkg = async (config, operation, options = null) => {
   const { pkg: pkgArr, title } = config || {};
-  const { name, env } = options || { name: "npm", env: "-D" };
+  const { name, env } = options || { name: "npm", env: "--save-dev" };
   const pkgNames = pkgArr.join(", ");
-  console.log(options, operation, pkgNames);
   // 出现加载图标
   // ：${pkgNames}
   const { startDesc, endDesc } = transformChinese(operation, title);
@@ -53,6 +52,7 @@ const installOrUninstallPkg = async (config, operation, options = null) => {
     spinner: Spinners.bouncingBall,
   });
   spinner.start();
+
   await execa(name, [operation, ...pkgArr, env], {
     cwd: process.cwd(),
   })

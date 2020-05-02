@@ -1,13 +1,16 @@
 {
   "name": "xzt-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "bin": {
     "xzt": "./bin/xzt.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commit": "git-cz",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "changelog-all": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
@@ -20,8 +23,11 @@
     "url": "https://github.com/Jen0/xzt-cli/issues"
   },
   "homepage": "https://github.com/Jen0/xzt-cli#readme",
-  "devDependencies": {},
-  "config": {},
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "dependencies": {
     "chalk": "^4.0.0",
     "commander": "^5.1.0",
@@ -32,5 +38,11 @@
     "minimist": "^1.2.5",
     "ora": "^4.0.4",
     "inquirer-autocomplete-prompt": "^1.0.2"
+  },
+  "devDependencies": {},
+  "husky": {
+    "hooks": {
+      "commit-msg": "node node_modules/git-commit/validate-commit-msg.js"
+    }
   }
 }
