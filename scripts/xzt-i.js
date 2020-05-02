@@ -7,6 +7,8 @@ const ora = require("ora");
 const execa = require("execa");
 const path = require("path");
 const rootPath = process.cwd();
+const { transformChinese } = require("../utils/package/npm-install");
+const Spinners = require("../lib/spinner/spinners.json");
 
 /**
  * 安装或者卸载
@@ -16,14 +18,18 @@ const rootPath = process.cwd();
 const installOrUninstall = (operation) => {
   return (...args) => {
     // 出现加载图标
-    const spinner = ora(`${operation}ing...`);
+    const { startDesc, endDesc } = transformChinese(operation);
+    const spinner = ora({
+      text: startDesc,
+      spinner: Spinners.bouncingBall,
+    });
     spinner.start();
     execa("npm", args, {
       cwd: rootPath,
     })
       .then((res) => {
         // 结束加载图标
-        spinner.succeed(`${operation} successfully`);
+        spinner.succeed(endDesc);
         console.log(chalk.green(`${res.stdout}`));
       })
       .catch((err) => {

@@ -17,8 +17,7 @@ const operationFlow = [
   {
     type: "autocomplete",
     name: "template",
-    message: "选择一个框架模板",
-
+    message: `请选择一个框架模板${chalk.red("\n  请输入关键字搜索")}`,
     source: function (answersSoFar, input) {
       return new Promise((resolve) => {
         setTimeout(() => {
@@ -30,7 +29,7 @@ const operationFlow = [
   {
     type: "input",
     name: "name",
-    message: "请输入创建项目名称",
+    message: "请输入项目目录名称",
     transformer: function (content) {
       return chalk.red.underline(content);
     },
@@ -44,7 +43,7 @@ const operationFlow = [
   {
     type: "confirm",
     name: "confirm",
-    message: "确认下载选中的模板吗？",
+    message: "确认下载选择的模板吗？",
   },
 ];
 module.exports = async () => {
@@ -79,8 +78,8 @@ module.exports = async () => {
   // console.log("\n下载地址：" + url);
   // 出现加载图标
   const spinner = ora({
-    text: chalk.bold.greenBright(`${template} 正在下载...`),
-    spinner: Spinners.shark,
+    text: chalk.bold.greenBright(`正在下载 ${template} ，请耐心等待...`),
+    spinner: Spinners.bouncingBall,
   });
   spinner.start();
   // http https 下载方式
@@ -91,7 +90,7 @@ module.exports = async () => {
       return;
     }
     // 结束加载图标
-    spinner.succeed(chalk.green(`恭喜您！模板下载成功。`));
+    spinner.succeed(chalk.bgGreen.white(`Successfully!\t`) + `模板下载成功。`);
     console.log(`\n    cd ${name} \n`);
   });
 };

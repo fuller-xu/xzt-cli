@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Commonjs" type="javaScript">
+    <properties>
+      <option name="frameworkName" value="Node.js Core Modules" />
+      <option name="frameworkVersion" value="1.0.0" />
+    </properties>
+    <CLASSES />
+    <SOURCES />
+  </library>
+</component>

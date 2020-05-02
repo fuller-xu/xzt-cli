@@ -5,7 +5,9 @@ const ora = require("ora");
 const execa = require("execa");
 const path = require("path");
 const rootPath = process.cwd();
+const { installOrUninstallPkg } = require("../utils/package/npm-install");
 
+const moduleTitle = "git commit验证工具";
 /**
  * 安装需要的依赖
  */
@@ -15,31 +17,14 @@ const devDependencies = [
   "cz-customizable",
   "conventional-changelog-cli",
   "husky",
-  "chalk",
 ];
+// 脚手架依赖，不需要卸载
+const cliDependencies = ["chalk"];
 
 /**
  * 读取package.json,添加配置
  */
 const pkgPath = `${rootPath}/package.json`;
-/**
- * 安装所需依赖
- * @param {Array} pkgArr
- * @param {String} operation 操作类型install/uninstall
- */
-const installOrUninstallPkg = (pkgArr, operation) => {
-  const pkgNames = pkgArr.join(" ");
-  // 出现加载图标
-  const spinner = ora(`${operation}ing ${pkgNames}`);
-  spinner.start();
-  return execa("npm", [operation, ...pkgArr, "-D"], {
-    cwd: rootPath,
-  }).then((res) => {
-    // 结束加载图标
-    spinner.succeed(`${operation}ing ${pkgNames} successfully`);
-    console.log(chalk.green(`${res.stdout}`));
-  });
-};
 
 /**
  * 验证元文件
@@ -49,7 +34,6 @@ const validateCommitMsgResource = path.join(
   `../lib/git/validate-commit-msg.js`
 );
 
-console.log(validateCommitMsgResource);
 /**
  * 创建的验证文件
  */
@@ -59,7 +43,7 @@ const validateCommitMsgPath = `node_modules/git-commit/validate-commit-msg.js`;
  */
 const outputValidateCommitMsgFile = () => {
   fs.outputFileSync(
-    `${rootPath}/${validateCommitMsgPath}`,
+    path.resolve(rootPath, validateCommitMsgPath),
     fs.readFileSync(validateCommitMsgResource, "utf8"),
     "utf8"
   );
@@ -74,9 +58,18 @@ const outputJsonFile = (filePath, json) => {
  * 安装
  */
 const install = async () => {
-  await installOrUninstallPkg(devDependencies, "install");
-
   const pkg = require(pkgPath);
+
+  // 是否安装依赖
+  const needDepArr = cliDependencies.filter(
+    (dep) => !pkg.devDependencies[dep] || !pkg.dependencies[dep]
+  );
+
+  await installOrUninstallPkg(
+    { pkg: [...devDependencies, ...needDepArr], title: moduleTitle },
+    "install"
+  );
+
   // 添加commit脚本
   pkg.scripts.commit = "git-cz";
   // 添加自动生成changelog脚本
@@ -116,6 +109,9 @@ const uninstall = async () => {
   // 更新package.json
   outputJsonFile(pkgPath, pkg);
   // 删除依赖
-  await installOrUninstallPkg(devDependencies, "uninstall");
+  await installOrUninstallPkg(
+    { pkg: devDependencies, title: moduleTitle },
+    "uninstall"
+  );
 };
 module.exports = { install, uninstall };

@@ -7,10 +7,7 @@
     "xzt": "./bin/xzt.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "commit": "git-cz",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
-    "changelog-all": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -33,17 +30,9 @@
     "minimist": "^1.2.5",
     "ora": "^4.0.4"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "node node_modules/git-commit/validate-commit-msg.js"
-    }
-  },
+  "config": {},
   "dependencies": {
+    "axios": "^0.19.2",
     "inquirer-autocomplete-prompt": "^1.0.2"
   }
 }
